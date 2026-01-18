@@ -2,5 +2,45 @@
 name = "stylus-trace-studio"
 version = "0.1.0"
 edition = "2021"
+authors = ["Stylus Trace Team"]
+license = "MIT"
+description = "Performance profiling and flamegraph generation for Arbitrum Stylus transactions"
 
 [dependencies]
+# CLI framework - stable, well-maintained
+clap = { version = "4.5", features = ["derive", "env"] }
+
+# JSON serialization - de facto standard
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# HTTP client - async runtime not needed for this use case
+reqwest = { version = "0.12", features = ["blocking", "json"] }
+
+# Flamegraph generation - battle-tested, used by cargo-flamegraph
+inferno = "0.11"
+
+# Error handling - composable, ergonomic
+anyhow = "1.0"      # For application errors
+thiserror = "1.0"   # For library errors
+
+# Logging
+env_logger = "0.11"
+log = "0.4"
+
+[dev-dependencies]
+tempfile = "3.10"   # For testing file outputs
+pretty_assertions = "1.4"  # Better test output
+
+[profile.release]
+opt-level = 3
+lto = true          # Link-time optimization
+codegen-units = 1   # Better optimization, slower compile
+strip = true        # Smaller binaries
+
+[profile.dev]
+opt-level = 0       # Fast compilation
+
+[[bin]]
+name = "stylus-trace"
+path = "src/main.rs"

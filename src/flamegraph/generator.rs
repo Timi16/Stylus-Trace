@@ -8,7 +8,7 @@ use crate::utils::error::FlamegraphError;
 use inferno::flamegraph::{self, Options, Palette};
 use log::{debug, info};
 use std::io::{BufWriter, Cursor};
-
+use std::str::FromStr; 
 /// Flamegraph configuration
 ///
 /// **Public** - allows customization of flamegraph appearance
@@ -190,13 +190,12 @@ fn create_inferno_options(config: &FlamegraphConfig) -> Options<'static> {
     // FIX: Inferno 0.11 uses `colors` field, not `palette`
     // Set color scheme using the `colors` field
     options.colors = match config.palette {
-        FlamegraphPalette::Hot => "hot".to_string(),
-        FlamegraphPalette::Mem => "mem".to_string(),
-        FlamegraphPalette::Io => "io".to_string(),
-        FlamegraphPalette::Java => "java".to_string(),
-        FlamegraphPalette::Consistent => "aqua".to_string(), // Consistent coloring
+        FlamegraphPalette::Hot => Palette::from_str("hot").unwrap_or_default(),
+        FlamegraphPalette::Mem => Palette::from_str("mem").unwrap_or_default(),
+        FlamegraphPalette::Io => Palette::from_str("io").unwrap_or_default(),
+        FlamegraphPalette::Java => Palette::from_str("java").unwrap_or_default(),
+        FlamegraphPalette::Consistent => Palette::from_str("aqua").unwrap_or_default(),
     };
-    
     // Set minimum width
     options.min_width = config.min_width;
     

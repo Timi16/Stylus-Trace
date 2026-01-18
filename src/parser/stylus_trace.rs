@@ -23,7 +23,7 @@ pub struct ExecutionStep {
     
     /// Gas remaining at this step
     #[serde(default)]
-    pub gas: u64,  `
+    pub gas: u64,
     
     /// Gas cost of this operation
     #[serde(default)]

@@ -1,0 +1,51 @@
+{
+  "gasUsed": 100000,
+  "structLogs": [
+    {
+      "pc": 0,
+      "gas": 100000,
+      "gas_cost": 3,
+      "op": "PUSH1",
+      "depth": 1,
+      "function": "main"
+    },
+    {
+      "pc": 2,
+      "gas": 99997,
+      "gas_cost": 5000,
+      "op": "SLOAD",
+      "depth": 1,
+      "function": "storage_read"
+    },
+    {
+      "pc": 3,
+      "gas": 94997,
+      "gas_cost": 20000,
+      "op": "SSTORE",
+      "depth": 1,
+      "function": "storage_write"
+    },
+    {
+      "pc": 4,
+      "gas": 74997,
+      "gas_cost": 10000,
+      "op": "CALL",
+      "depth": 2,
+      "function": "execute_call"
+    }
+  ],
+  "hostio": [
+    {
+      "type": "storage_load",
+      "gas": 5000
+    },
+    {
+      "type": "storage_store",
+      "gas": 20000
+    },
+    {
+      "type": "call",
+      "gas": 10000
+    }
+  ]
+}

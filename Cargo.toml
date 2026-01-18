@@ -45,6 +45,10 @@ strip = true        # Smaller binaries
 [profile.dev]
 opt-level = 0       # Fast compilation
 
+[lib]
+name = "stylus_trace_studio"
+path = "src/lib.rs"
+
 [[bin]]
 name = "stylus-trace"
 path = "src/main.rs"

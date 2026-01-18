@@ -95,7 +95,7 @@ enum Commands {
     Version,
 }
 
-fn main() {
+fn main() -> Result<()> {  // Add return type
     // Parse CLI arguments
     let cli = Cli::parse();
     
@@ -104,7 +104,7 @@ fn main() {
     env_logger::Builder::from_env(Env::default().default_filter_or(log_level)).init();
     
     // Execute command
-    let result = match cli.command {
+    match cli.command {
         Commands::Capture {
             rpc,
             tx,
@@ -149,29 +149,23 @@ fn main() {
             validate_args(&args)?;
             
             // Execute capture
-            execute_capture(args)
+            execute_capture(args)?;
         }
         
         Commands::Validate { file } => {
-            validate_profile_file(file)
+            validate_profile_file(file)?;
         }
         
         Commands::Schema { show } => {
             display_schema(show);
-            Ok(())
         }
         
         Commands::Version => {
             display_version();
-            Ok(())
         }
-    };
-    
-    // Handle errors
-    if let Err(e) = result {
-        error!("Error: {:#}", e);
-        std::process::exit(1);
     }
+    
+    Ok(())  // Return Ok
 }
 
 /// Parse palette string to enum

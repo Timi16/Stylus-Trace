@@ -14,31 +14,32 @@ use serde::{Deserialize, Serialize};
 ///
 /// This represents a single step in the WASM execution.
 /// The exact fields depend on the stylusTracer implementation.
+/// Raw execution step from stylusTracer
 #[derive(Debug, Clone, Deserialize)]
-struct ExecutionStep {
+pub struct ExecutionStep {
     /// Program counter / instruction pointer
     #[serde(default)]
-    pc: u64,
+    pub pc: u64,  
     
     /// Gas remaining at this step
     #[serde(default)]
-    gas: u64,
+    pub gas: u64,  `
     
     /// Gas cost of this operation
     #[serde(default)]
-    gas_cost: u64,
+    pub gas_cost: u64,  
     
     /// Operation name (if available)
     #[serde(default)]
-    op: Option<String>,
+    pub op: Option<String>, 
     
     /// Stack depth
     #[serde(default)]
-    depth: u32,
+    pub depth: u32,  
     
     /// Function name (if debug symbols present)
     #[serde(default)]
-    function: Option<String>,
+    pub function: Option<String>, 
 }
 
 /// Parsed trace data (internal representation)

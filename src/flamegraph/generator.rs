@@ -187,27 +187,21 @@ fn create_inferno_options(config: &FlamegraphConfig) -> Options<'static> {
     // Set count name (appears in tooltips)
     options.count_name = config.count_name.clone();
     
-    // Set color palette
-    options.palette = match config.palette {
-        FlamegraphPalette::Hot => Palette::hot(),
-        FlamegraphPalette::Mem => Palette::mem(),
-        FlamegraphPalette::Io => Palette::io(),
-        FlamegraphPalette::Java => Palette::java(),
-        FlamegraphPalette::Consistent => {
-            // Consistent coloring based on function name hash
-            let mut palette = Palette::default();
-            palette.selected = true; // Enable consistent coloring
-            palette
-        }
+    // FIX: Inferno 0.11 uses `colors` field, not `palette`
+    // Set color scheme using the `colors` field
+    options.colors = match config.palette {
+        FlamegraphPalette::Hot => "hot".to_string(),
+        FlamegraphPalette::Mem => "mem".to_string(),
+        FlamegraphPalette::Io => "io".to_string(),
+        FlamegraphPalette::Java => "java".to_string(),
+        FlamegraphPalette::Consistent => "aqua".to_string(), // Consistent coloring
     };
     
     // Set minimum width
     options.min_width = config.min_width;
     
-    // Set image width
-    if let Some(width) = config.image_width {
-        options.image_width = width;
-    }
+    // FIX: image_width expects Option<usize>
+    options.image_width = config.image_width;
     
     // Set reverse (false = root at bottom, true = root at top)
     options.reverse_stack_order = config.reverse;

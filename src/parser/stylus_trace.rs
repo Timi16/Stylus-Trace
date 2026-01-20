@@ -14,7 +14,6 @@ use serde::{Deserialize, Serialize};
 ///
 /// This represents a single step in the WASM execution.
 /// The exact fields depend on the stylusTracer implementation.
-/// Raw execution step from stylusTracer
 #[derive(Debug, Clone, Deserialize)]
 pub struct ExecutionStep {
     /// Program counter / instruction pointer
@@ -26,7 +25,8 @@ pub struct ExecutionStep {
     pub gas: u64,
     
     /// Gas cost of this operation
-    #[serde(default)]
+    /// FIXED: Handle both camelCase and snake_case
+    #[serde(default, alias = "gasCost")]
     pub gas_cost: u64,  
     
     /// Operation name (if available)
@@ -325,5 +325,25 @@ mod tests {
             "random_field": "value"
         });
         assert!(validate_trace_format(&invalid_trace).is_err());
+    }
+    
+    #[test]
+    fn test_parse_camelcase_gas_cost() {
+        let raw_trace = json!({
+            "gasUsed": 100,
+            "structLogs": [
+                {
+                    "pc": 0,
+                    "op": "PUSH1",
+                    "gas": 1000,
+                    "gasCost": 3,
+                    "depth": 1
+                }
+            ]
+        });
+        
+        let parsed = parse_trace("0xtest", &raw_trace).unwrap();
+        assert_eq!(parsed.execution_steps.len(), 1);
+        assert_eq!(parsed.execution_steps[0].gas_cost, 3);
     }
 }

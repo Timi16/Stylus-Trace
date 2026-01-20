@@ -86,22 +86,43 @@ pub fn build_collapsed_stacks(parsed_trace: &ParsedTrace) -> Vec<CollapsedStack>
     
     // Current call stack (tracks function hierarchy)
     let mut call_stack: Vec<String> = Vec::new();
+    let mut prev_depth = 0u32;
     
     // Process each execution step
     for step in &parsed_trace.execution_steps {
-        // Update call stack based on depth changes
-        update_call_stack(&mut call_stack, step.depth as usize);
-        
-        // Add current operation to stack
+        // Get operation name
         let operation = step.function.as_deref()
             .or(step.op.as_deref())
             .unwrap_or("unknown");
         
-        // Build the full stack string
-        let stack_str = build_stack_string(&call_stack, operation);
+        // FIXED: Handle depth changes properly
+        let current_depth = step.depth as usize;
         
-        // Add gas cost to this stack
-        *stack_map.entry(stack_str).or_insert(0) += step.gas_cost;
+        // If depth decreased, we returned from function calls
+        if current_depth < call_stack.len() {
+            call_stack.truncate(current_depth);
+        }
+        
+        // If depth increased, we entered a new call
+        // (Note: EVM traces don't always give us the function name on entry,
+        //  so we add a placeholder and the actual operation will override it)
+        while call_stack.len() < current_depth {
+            call_stack.push("call".to_string());
+        }
+        
+        // Build the full stack string with current operation
+        let stack_str = if call_stack.is_empty() {
+            operation.to_string()
+        } else {
+            format!("{};{}", call_stack.join(";"), operation)
+        };
+        
+        // Add gas cost to this stack (FIXED: now actually accumulates)
+        if step.gas_cost > 0 {
+            *stack_map.entry(stack_str).or_insert(0) += step.gas_cost;
+        }
+        
+        prev_depth = step.depth;
     }
     
     // Also add HostIO stacks if we have HostIO events

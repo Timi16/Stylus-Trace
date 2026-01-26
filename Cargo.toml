@@ -12,11 +12,11 @@ exclude = [
   "profiles/*",
   "node_modules/*"
 ]
-authors = ["Stylus Trace Team"]
+authors = ["Creatives Onchain"]
 license = "MIT"
 description = "Performance profiling and flamegraph generation for Arbitrum Stylus transactions"
-repository = "https://github.com/Timi16/stylus-trace"
-homepage = "https://github.com/Timi16/stylus-trace"
+repository = "https://github.com/CreativesOnchain/Stylus-Trace"
+homepage = "https://github.com/CreativesOnchain/Stylus-Trace"
 documentation = "https://docs.rs/stylus-trace"
 readme = "README.md"
 keywords = ["arbitrum", "stylus", "profiling", "flamegraph", "wasm"]

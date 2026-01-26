@@ -1,6 +1,6 @@
 [package]
 name = "stylus-trace-studio"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 
 exclude = [
@@ -17,7 +17,7 @@ license = "MIT"
 description = "Performance profiling and flamegraph generation for Arbitrum Stylus transactions"
 repository = "https://github.com/CreativesOnchain/Stylus-Trace"
 homepage = "https://github.com/CreativesOnchain/Stylus-Trace"
-documentation = "https://docs.rs/stylus-trace-studio"
+documentation = "https://docs.rs/Stylus-Trace"
 readme = "README.md"
 keywords = ["arbitrum", "stylus", "profiling", "flamegraph", "wasm"]
 categories = ["command-line-utilities", "development-tools"]
